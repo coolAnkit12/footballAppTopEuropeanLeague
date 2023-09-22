@@ -1,11 +1,11 @@
 <div class="card">
   <div class="card-body">
     <app-spinner [loading]="loading"></app-spinner>
-    <div class='table-wrap'>
+    <div class="table-wrap">
       <table class="table table-sm table-light table-striped">
         <tbody>
           <tr *ngFor="let fixture of fixtures">
-            <td> <img [src]="fixture.teams.home.logo" class="logo" /></td>
+            <td><img [src]="fixture.teams.home.logo" class="logo" /></td>
             <td>{{ fixture.teams.home.name }}</td>
             <td>{{ fixture.goals.home }} - {{ fixture.goals.away }}</td>
             <td>{{ fixture.teams.away.name }}</td>

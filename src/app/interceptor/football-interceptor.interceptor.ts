@@ -3,24 +3,26 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from "../../environments/environment";
+import { environment } from '../../environments/environment';
 
 @Injectable()
-export class AddKeyInterceptor implements HttpInterceptor {
-
+export class FootballInterceptor implements HttpInterceptor {
   constructor() {}
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
     const isApiRequest = request.url.startsWith(environment.API_HOST_URL);
 
     if (isApiRequest) {
       request = request.clone({
         setHeaders: {
-          'x-rapidapi-key': environment.API_KEY
-        }
+          'x-rapidapi-key': environment.API_KEY,
+        },
       });
     }
     return next.handle(request);

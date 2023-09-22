@@ -6,9 +6,12 @@
 
 <div *ngIf="errorMessage">{{ errorMessage }}</div>
 
-<app-spinner [loading]="showSpinner" ></app-spinner>
+<app-spinner [loading]="showSpinner"></app-spinner>
 
-<table class="table table-bordered" *ngIf="leagueStandingsList.length > 0 && !showSpinner">
+<table
+  class="table table-bordered"
+  *ngIf="leagueStandingsList.length > 0 && !showSpinner"
+>
   <thead>
     <tr>
       <th scope="col"></th>

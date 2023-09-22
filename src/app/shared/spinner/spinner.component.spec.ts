@@ -8,9 +8,8 @@ describe('SpinnerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SpinnerComponent ]
-    })
-    .compileComponents();
+      declarations: [SpinnerComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
