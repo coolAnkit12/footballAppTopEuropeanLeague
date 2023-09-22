@@ -1,0 +1,9 @@
+nav ul li{
+    padding : 0 40px 0 40px;
+  }
+  
+.active{
+    text-decoration: underline;
+    font-weight: bold;
+    color: blue !important;
+}
