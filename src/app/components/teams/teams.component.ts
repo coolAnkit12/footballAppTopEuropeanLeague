@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FootballDataService } from '../../services/football-data.service';
+import { FootballService } from '../../services/football.service';
 import { Fixtures } from '../../interfaces/fixtures';
 import { UtilitiesService } from '../../services/utilities.service';
 
@@ -16,7 +16,7 @@ export class TeamsComponent implements OnInit {
   teamId: string;
 
   constructor(
-    private footballDataService: FootballDataService,
+    private footballService: FootballService,
     private route: ActivatedRoute,
     private utilitiesService: UtilitiesService
   ) {}
@@ -39,7 +39,7 @@ export class TeamsComponent implements OnInit {
       ) || null;
 
     if (leagueId) {
-      this.footballDataService
+      this.footballService
         .getfixtures(leagueId, this.teamId)
         .subscribe((data) => {
           this.loading = false;

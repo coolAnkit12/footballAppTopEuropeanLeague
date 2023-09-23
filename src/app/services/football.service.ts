@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { GeneralConstant } from '../../assets/constant';
+import { GeneralConstant } from '../constant';
 import { Country } from '../interfaces/country';
 import { Observable } from 'rxjs';
 import { Standings } from '../interfaces/standings';
@@ -10,7 +10,7 @@ import { Fixtures } from '../interfaces/fixtures';
 @Injectable({
   providedIn: 'root',
 })
-export class FootballDataService {
+export class FootballService {
   constructor(private http: HttpClient) {}
 
   getCountries(): Observable<Country> {

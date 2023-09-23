@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GeneralConstant } from '../assets/constant';
+import { GeneralConstant } from './constant';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +7,5 @@ import { GeneralConstant } from '../assets/constant';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = GeneralConstant.FOOTBALL_TITLE;
+  footballAppTitle = GeneralConstant.FOOTBALL_TITLE;
 }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FootballDataService } from '../../services/football-data.service';
+import { FootballService } from '../../services/football.service';
 import { Country } from '../../interfaces/country';
 import { Standings } from '../../interfaces/standings';
-import { TopEuropeanLeagues, StandingsConst } from '../../../assets/constant';
+import { TopEuropeanLeagues, StandingsConst } from '../../constant';
 import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class StandingsComponent implements OnInit {
   currentYear: string;
 
   constructor(
-    private footballDataService: FootballDataService,
+    private footballService: FootballService,
     private utilitiesService: UtilitiesService
   ) {
     this.currentYear = new Date().getFullYear().toString();
@@ -40,15 +40,15 @@ export class StandingsComponent implements OnInit {
   }
 
   getTopLeagueCountries() {
-    this.footballDataService.getCountries().subscribe((data) => {
+    this.footballService.getCountries().subscribe((data) => {
       if (data['response'] && data['response'].length > 0) {
         this.countriesList = data['response'].filter((country) =>
           TopEuropeanLeagues.hasOwnProperty(country.name)
         );
 
-        this.utilitiesService.setLocalStorage(
+        this.utilitiesService.setLocalStorage<Country[]>(
           'countries',
-          JSON.stringify(this.countriesList)
+          this.countriesList
         );
         this.loadLeagueStandings();
       } else {
@@ -66,9 +66,9 @@ export class StandingsComponent implements OnInit {
       ? selectedCountryItem
       : this.countriesList[0];
 
-    this.utilitiesService.setLocalStorage(
+    this.utilitiesService.setLocalStorage<Country>(
       'selectedCountry',
-      JSON.stringify(this.selectedCountry)
+      this.selectedCountry
     );
 
     this.getCountriesTeamData(this.selectedCountry);
@@ -81,9 +81,9 @@ export class StandingsComponent implements OnInit {
 
       this.selectedCountry = country;
 
-      this.utilitiesService.setLocalStorage(
+      this.utilitiesService.setLocalStorage<Country>(
         'selectedCountry',
-        JSON.stringify(this.selectedCountry)
+        this.selectedCountry
       );
 
       let leagueLocalId =
@@ -101,15 +101,15 @@ export class StandingsComponent implements OnInit {
 
   getLeagueId(country: Country, leagueLocalId: number) {
     let leagueName = TopEuropeanLeagues[country.name];
-    this.footballDataService
+    this.footballService
       .getLeaguesId(country.code, this.currentYear, leagueName, country.name)
       .subscribe((data) => {
         if (data['response'] && data['response'].length > 0) {
           leagueLocalId = data['response'][0]?.league.id;
 
-          this.utilitiesService.setLocalStorage(
+          this.utilitiesService.setLocalStorage<number>(
             `TopleagueId_${country.name}`,
-            JSON.stringify(leagueLocalId)
+            leagueLocalId
           );
           this.getStandings(leagueLocalId.toString());
         } else {
@@ -130,16 +130,16 @@ export class StandingsComponent implements OnInit {
       this.leagueStandingsList = standingsData;
       this.showSpinner = false;
     } else {
-      this.footballDataService
+      this.footballService
         .getStandings(leagueId, this.currentYear)
         .subscribe((data) => {
           if (data['response'] && data['response'].length > 0) {
             this.leagueStandingsList =
               data['response'][0]?.league?.standings[0];
 
-            this.utilitiesService.setLocalStorage(
+            this.utilitiesService.setLocalStorage<Standings[]>(
               `standings_${this.selectedCountry.name}`,
-              JSON.stringify(this.leagueStandingsList)
+              this.leagueStandingsList
             );
 
             this.showSpinner = false;

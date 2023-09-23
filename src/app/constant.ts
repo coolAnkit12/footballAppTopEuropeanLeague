@@ -17,6 +17,6 @@ export const StandingsConst = {
 };
 
 export const GeneralConstant = {
-  FOOTBALL_TITLE: 'Football Updates',
+  FOOTBALL_TITLE: 'FOOTBALL UPDATES',
   TEN: '10',
 };

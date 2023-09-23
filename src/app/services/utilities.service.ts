@@ -6,11 +6,11 @@ import { Injectable } from '@angular/core';
 export class UtilitiesService {
   constructor() {}
 
-  setLocalStorage(name: string, value: any) {
-    if (this.getLocalStorage(name)) {
-      this.removeLocalStorage(name);
+  setLocalStorage<T>(key: string, value: T) {
+    if (this.getLocalStorage(key)) {
+      this.removeLocalStorage(key);
     }
-    localStorage.setItem(name, value);
+    localStorage.setItem(key, JSON.stringify(value));
   }
 
   getLocalStorage(name: string) {
