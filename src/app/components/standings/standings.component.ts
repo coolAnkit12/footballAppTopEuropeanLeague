@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FootballService } from '../../services/football.service';
 import { Country } from '../../interfaces/country';
 import { Standings } from '../../interfaces/standings';
 import { TopEuropeanLeagues, StandingsConst } from '../../constant';
 import { UtilitiesService } from '../../services/utilities.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-standings',
   templateUrl: './standings.component.html',
   styleUrls: ['./standings.component.css'],
 })
-export class StandingsComponent implements OnInit {
+export class StandingsComponent implements OnInit, OnDestroy {
   countriesList: Country[] = [];
   selectedCountryName: string;
   errorMessage = '';
@@ -20,6 +21,7 @@ export class StandingsComponent implements OnInit {
 
   readonly STANDING_CONSTANT = StandingsConst;
   currentYear: string;
+  private ngUnsubscribe: Subject<any> = new Subject();
 
   constructor(
     private footballService: FootballService,
@@ -28,36 +30,44 @@ export class StandingsComponent implements OnInit {
     this.currentYear = new Date().getFullYear().toString();
   }
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next(true);
+    this.ngUnsubscribe.complete();
+  }
+
   ngOnInit(): void {
     let countries =
       JSON.parse(this.utilitiesService.getLocalStorage('countries')) || [];
     if (countries && countries.length > 0) {
       this.countriesList = countries;
-      this.loadLeagueStandings();
+      this.loadTopLeagueStandings();
     } else {
       this.getTopLeagueCountries();
     }
   }
 
   getTopLeagueCountries() {
-    this.footballService.getCountries().subscribe((data) => {
-      if (data['response'] && data['response'].length > 0) {
-        this.countriesList = data['response'].filter((country) =>
-          TopEuropeanLeagues.hasOwnProperty(country.name)
-        );
+    this.footballService
+      .getCountries()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data) => {
+        if (data['response'] && data['response'].length > 0) {
+          this.countriesList = data['response'].filter((country) =>
+            TopEuropeanLeagues.hasOwnProperty(country.name)
+          );
 
-        this.utilitiesService.setLocalStorage<Country[]>(
-          'countries',
-          this.countriesList
-        );
-        this.loadLeagueStandings();
-      } else {
-        this.errorMessage = data['errors']?.requests;
-      }
-    });
+          this.utilitiesService.setLocalStorage<Country[]>(
+            'countries',
+            this.countriesList
+          );
+          this.loadTopLeagueStandings();
+        } else {
+          this.errorMessage = data['errors']?.requests;
+        }
+      });
   }
 
-  loadLeagueStandings() {
+  loadTopLeagueStandings() {
     let selectedCountryItem =
       JSON.parse(this.utilitiesService.getLocalStorage('selectedCountry')) ||
       null;

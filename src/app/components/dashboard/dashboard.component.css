@@ -1,3 +1,7 @@
 nav ul li {
   padding: 0 40px 0 40px;
 }
+
+.cursorPointer {
+  cursor: pointer;
+}

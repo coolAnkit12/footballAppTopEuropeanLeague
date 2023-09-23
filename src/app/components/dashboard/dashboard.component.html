@@ -1,5 +1,5 @@
 <ul class="nav nav-pills nav-fill">
-  <li class="nav-item" *ngFor="let country of topLeagueCountries">
+  <li class="nav-item cursorPointer" *ngFor="let country of topLeagueCountries">
     <a
       id="{{ country.name }}Select"
       [ngClass]="{ active: currentActiveCountry == country.name }"
