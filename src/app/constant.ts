@@ -12,7 +12,7 @@ export const StandingsConst = {
   WIN: 'W',
   LOOSE: 'L',
   DRAW: 'D',
-  GOAL_DIFFERNCE: 'Goals Differnce',
+  GOAL_DIFFERNCE: 'Goals Difference',
   POINTS: 'Points',
 };
 
